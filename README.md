@@ -1,7 +1,7 @@
 
 
 
-# ♻️ Informal Handling of E-Waste Causing Health Hazards
+# ♻️ EcoHub : A Unified Digital Ecosystem for Transparent E-Waste Flow and Safe Disposal
 
 ## 📌 Project Overview
 
