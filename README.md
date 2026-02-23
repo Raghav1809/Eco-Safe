@@ -1,6 +1,5 @@
-Here’s a clean, professional **README.md** you can copy directly into your project:
 
----
+
 
 # ♻️ Informal Handling of E-Waste Causing Health Hazards
 
@@ -145,8 +144,4 @@ This project is licensed under the MIT License.
 
 ---
 
-If you want, I can also create:
-
-* a **short README version for GitHub preview**
-* or a **professional academic README** for submission/report format.
 
