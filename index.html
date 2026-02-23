@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSafe | Innovative E-Waste Solutions</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#2D5A27',
+                            lightGreen: '#4ade80',
+                            charcoal: '#1A1A1A',
+                            accent: '#FACC15'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'slide-in': 'slideIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(74, 222, 128, 0.2)' },
+                            '100%': { boxShadow: '0 0 20px rgba(74, 222, 128, 0.6)' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .circuit-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h10v10H10zM30 10h10v10H30zM50 10h10v10H50zM70 10h10v10H70zM90 10h10v10H90zM10 30h10v10H10zM10 50h10v10H10zM10 70h10v10H10zM10 90h10v10H10z' fill='%232D5A27' fill-opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+        .dark .glass {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .dark .hover-lift:hover {
+            box-shadow: 0 20px 40px rgba(74, 222, 128, 0.1);
+        }
+        .card-flip-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flip:hover .card-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-zinc-900 dark:bg-brand-charcoal dark:text-white transition-colors duration-300 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i data-lucide="cpu" class="text-brand-green dark:text-brand-lightGreen"></i>
+                <span class="font-bold text-xl tracking-tight text-brand-green dark:text-white">EcoSafe</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
+                <a href="#problem" class="relative group py-2">
+                    <span class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Problem</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green dark:bg-brand-lightGreen transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#hazards" class="relative group py-2">
+                    <span class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Hazards</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green dark:bg-brand-lightGreen transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#action" class="relative group py-2">
+                    <span class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Action</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green dark:bg-brand-lightGreen transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#resources" class="relative group py-2">
+                    <span class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Resources</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green dark:bg-brand-lightGreen transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                    <i data-lucide="sun" id="sun-icon" class="hidden"></i>
+                    <i data-lucide="moon" id="moon-icon"></i>
+                </button>
+                <button onclick="openModal('report-modal')" class="bg-brand-green hover:bg-emerald-700 text-white px-6 py-2 rounded-full font-semibold transition-all hover:scale-105 shadow-lg shadow-brand-green/20">
+                    Report Issue
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Carousel -->
+        <div class="absolute inset-0 z-0">
+            <div id="hero-carousel" class="relative w-full h-full">
+                <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-100">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover" alt="Modern Technology">
+                </div>
+                <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover" alt="E-waste Impact">
+                </div>
+                <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover" alt="Sustainable Future">
+                </div>
+                <div class="carousel-item absolute inset-0 transition-opacity duration-1000 opacity-0">
+                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover" alt="Tech Details">
+                </div>
+            </div>
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-white/70 dark:bg-brand-charcoal/80 transition-colors duration-300"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 dark:via-brand-charcoal/20 to-gray-50 dark:to-brand-charcoal"></div>
+        </div>
+
+        <div class="absolute inset-0 circuit-bg pointer-events-none opacity-20 dark:opacity-30 z-1"></div>
+        
+        <!-- Interactive Background Blobs -->
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-green/20 rounded-full blur-[120px] animate-pulse-slow z-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-lightGreen/10 rounded-full blur-[120px] animate-pulse-slow z-1" style="animation-delay: 2s"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center px-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-lightGreen text-xs font-bold uppercase tracking-widest mb-8 reveal">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-lightGreen opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-lightGreen"></span>
+                </span>
+                Global E-Waste Awareness 2026
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black mb-6 leading-tight tracking-tighter reveal text-brand-green dark:text-white">
+                Informal Handling <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-green to-emerald-600 dark:from-brand-lightGreen dark:to-emerald-400">Is Poisoning Us</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-zinc-600 dark:text-gray-400 mb-10 max-w-3xl mx-auto font-light leading-relaxed reveal">
+                Protect your health and environment. Learn why traditional scrap handling is a silent killer and how you can switch to safe practices.
+            </p>
+            <div class="flex flex-col md:flex-row gap-6 justify-center reveal">
+                <button onclick="openModal('quiz-modal')" class="group relative bg-brand-green dark:bg-brand-lightGreen text-white dark:text-brand-charcoal px-8 py-5 rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-[1.05] active:scale-95 shadow-xl shadow-brand-green/20 dark:shadow-brand-lightGreen/10">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i data-lucide="stethoscope" size="20"></i> Check Your Health Risk
+                    </span>
+                    <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </button>
+                <a href="#centers" class="group border-2 border-brand-green/30 dark:border-white/10 hover:border-brand-green dark:hover:border-brand-lightGreen text-brand-green dark:text-white px-8 py-5 rounded-2xl font-bold text-lg transition-all flex items-center gap-2 hover:bg-brand-green/5 dark:hover:bg-white/5 hover:scale-[1.05] active:scale-95">
+                    <i data-lucide="map-pin" size="20"></i> Find Disposal Centers
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <i data-lucide="mouse" size="32"></i>
+        </div>
+    </section>
+
+    <!-- 2. Problem Snapshot Section -->
+    <section id="problem" class="py-32 relative bg-white dark:bg-transparent overflow-hidden">
+        <!-- Background Decorative Element -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-green/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 dark:hidden"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 dark:hidden"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 text-brand-green font-black uppercase tracking-[0.3em] text-[10px] mb-4">
+                        <span class="w-8 h-[1px] bg-brand-green"></span> The Problem
+                    </div>
+                    <h2 class="text-5xl font-black mb-6 text-brand-green dark:text-white leading-[1.1]">The Hidden Toxicity</h2>
+                    <p class="text-zinc-600 dark:text-gray-400 text-lg leading-relaxed">Every year, 50+ million tonnes of e-waste are generated. Only 20% is recycled formally. The rest? It's handled in backyards, poisoning the soil we walk on and the air we breathe.</p>
+                </div>
+                <div class="bg-brand-green/10 border border-brand-green/20 p-8 rounded-[2.5rem] hover:scale-105 transition-transform duration-500 group cursor-help relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="text-5xl font-black text-brand-green dark:text-brand-lightGreen mb-1">80%</div>
+                        <div class="text-xs font-bold uppercase tracking-widest opacity-60 text-brand-green dark:text-white">Handled Informally</div>
+                    </div>
+                    <div class="absolute -right-2 -bottom-2 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                        <i data-lucide="alert-triangle" size="80"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="reveal glass p-10 rounded-[2.5rem] group cursor-default hover-lift transition-all relative overflow-hidden h-[380px]">
+                    <div class="relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-brand-green/10 dark:bg-brand-green/20 flex items-center justify-center mb-8 group-hover:rotate-[360deg] transition-transform duration-700 ease-in-out">
+                            <i data-lucide="skull" class="text-brand-green dark:text-brand-lightGreen" size="32"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-brand-green dark:text-white group-hover:text-emerald-600 dark:group-hover:text-brand-lightGreen transition-colors">Toxic Heavy Metals</h3>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed mb-6">Lead, Mercury, and Cadmium accumulate in the body, causing irreversible damage.</p>
+                    </div>
+                    
+                    <!-- Hidden Detail Detail -->
+                    <div class="absolute bottom-0 left-0 right-0 p-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-brand-green/10">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-green dark:text-brand-lightGreen mb-2">Health Impact</p>
+                        <p class="text-sm text-zinc-800 dark:text-zinc-200 font-bold leading-snug">Chronic exposure leads to kidney failure and bone density loss.</p>
+                    </div>
+                    
+                    <!-- Corner Glow -->
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-brand-green/10 rounded-full blur-2xl group-hover:bg-brand-green/30 transition-all duration-500"></div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="reveal glass p-10 rounded-[2.5rem] group cursor-default hover-lift transition-all relative overflow-hidden h-[380px]" style="transition-delay: 0.1s">
+                    <div class="relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-brand-green/10 dark:bg-brand-green/20 flex items-center justify-center mb-8 group-hover:rotate-[360deg] transition-transform duration-700 ease-in-out">
+                            <i data-lucide="wind" class="text-brand-green dark:text-brand-lightGreen" size="32"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-brand-green dark:text-white group-hover:text-emerald-600 dark:group-hover:text-brand-lightGreen transition-colors">Airborne Dioxins</h3>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed mb-6">Burning plastic coatings releases cancer-causing chemicals into the local atmosphere.</p>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 right-0 p-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-brand-green/10">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-green dark:text-brand-lightGreen mb-2">Health Impact</p>
+                        <p class="text-sm text-zinc-800 dark:text-zinc-200 font-bold leading-snug">Inhalation causes severe respiratory distress and lung cancer risk.</p>
+                    </div>
+                    
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-brand-green/10 rounded-full blur-2xl group-hover:bg-brand-green/30 transition-all duration-500"></div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="reveal glass p-10 rounded-[2.5rem] group cursor-default hover-lift transition-all relative overflow-hidden h-[380px]" style="transition-delay: 0.2s">
+                    <div class="relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-brand-green/10 dark:bg-brand-green/20 flex items-center justify-center mb-8 group-hover:rotate-[360deg] transition-transform duration-700 ease-in-out">
+                            <i data-lucide="droplets" class="text-brand-green dark:text-brand-lightGreen" size="32"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-brand-green dark:text-white group-hover:text-emerald-600 dark:group-hover:text-brand-lightGreen transition-colors">Water Leaching</h3>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed mb-6">Acids used to extract gold seep into groundwater, destroying local water supplies.</p>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 right-0 p-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-brand-green/10">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-green dark:text-brand-lightGreen mb-2">Health Impact</p>
+                        <p class="text-sm text-zinc-800 dark:text-zinc-200 font-bold leading-snug">Contaminated water leads to gastrointestinal diseases and toxicity.</p>
+                    </div>
+                    
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-brand-green/10 rounded-full blur-2xl group-hover:bg-brand-green/30 transition-all duration-500"></div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="reveal glass p-10 rounded-[2.5rem] group cursor-default hover-lift transition-all relative overflow-hidden h-[380px]" style="transition-delay: 0.3s">
+                    <div class="relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-brand-green/10 dark:bg-brand-green/20 flex items-center justify-center mb-8 group-hover:rotate-[360deg] transition-transform duration-700 ease-in-out">
+                            <i data-lucide="baby" class="text-brand-green dark:text-brand-lightGreen" size="32"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-brand-green dark:text-white group-hover:text-emerald-600 dark:group-hover:text-brand-lightGreen transition-colors">Genetic Risks</h3>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed mb-6">Exposure affects reproductive health and causes birth defects in communities.</p>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 right-0 p-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-brand-green/10">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-brand-green dark:text-brand-lightGreen mb-2">Health Impact</p>
+                        <p class="text-sm text-zinc-800 dark:text-zinc-200 font-bold leading-snug">Causes permanent DNA damage and severe neurodevelopmental issues.</p>
+                    </div>
+                    
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-brand-green/10 rounded-full blur-2xl group-hover:bg-brand-green/30 transition-all duration-500"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Journey of Toxicity: Interactive Timeline -->
+    <section id="hazards" class="py-32 relative overflow-hidden bg-white dark:bg-transparent">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl font-black mb-6 text-brand-green dark:text-white">Journey of Toxicity</h2>
+                <p class="text-zinc-600 dark:text-gray-400 text-lg">How informal handling leads to irreversible health disasters</p>
+            </div>
+
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-brand-green/20 dark:bg-brand-green/30"></div>
+                
+                <!-- Step 1 -->
+                <div class="relative mb-24 flex justify-between items-center w-full reveal">
+                    <div class="w-5/12 text-right pr-12">
+                        <h4 class="text-2xl font-bold text-brand-green dark:text-brand-lightGreen mb-3">Informal Collection</h4>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed">Scrap dealers gather end-of-life electronics without protective gear, exposing themselves to initial lead and mercury dust.</p>
+                    </div>
+                    <div class="z-10 bg-brand-green p-4 rounded-full border-4 border-gray-50 dark:border-brand-charcoal shadow-xl">
+                        <i data-lucide="truck" size="24" class="text-white"></i>
+                    </div>
+                    <div class="w-5/12 pl-12 group">
+                        <div class="overflow-hidden rounded-3xl shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=400&q=80" alt="E-waste pile" class="w-full h-48 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 hover:scale-110">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative mb-24 flex flex-row-reverse justify-between items-center w-full reveal">
+                    <div class="w-5/12 text-left pl-12">
+                        <h4 class="text-2xl font-bold text-brand-green dark:text-brand-lightGreen mb-3">Hazardous Processing</h4>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed">Burning wires for copper and acid-bathing motherboards for gold recovery releases highly carcinogenic dioxins into the air.</p>
+                    </div>
+                    <div class="z-10 bg-brand-green p-4 rounded-full border-4 border-gray-50 dark:border-brand-charcoal shadow-xl">
+                        <i data-lucide="flame" size="24" class="text-white"></i>
+                    </div>
+                    <div class="w-5/12 pr-12 text-right group">
+                        <div class="overflow-hidden rounded-3xl shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1611270629569-8b357cb88da9?auto=format&fit=crop&w=400&q=80" alt="Hazardous process" class="w-full h-48 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 hover:scale-110">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex justify-between items-center w-full reveal">
+                    <div class="w-5/12 text-right pr-12">
+                        <h4 class="text-2xl font-bold text-brand-green dark:text-brand-lightGreen mb-3">Chronic Illness</h4>
+                        <p class="text-zinc-500 dark:text-gray-400 leading-relaxed">Long-term exposure leads to respiratory failure, neurological degeneration, and environmental contamination of the local food chain.</p>
+                    </div>
+                    <div class="z-10 bg-brand-green p-4 rounded-full border-4 border-gray-50 dark:border-brand-charcoal shadow-xl animate-pulse">
+                        <i data-lucide="activity" size="24" class="text-white"></i>
+                    </div>
+                    <div class="w-5/12 pl-12 group">
+                        <div class="overflow-hidden rounded-3xl shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1505751172107-573225a9405b?auto=format&fit=crop&w=400&q=80" alt="Health impact" class="w-full h-48 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 hover:scale-110">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Who Is At Risk Section -->
+    <section id="risk" class="py-32 bg-zinc-100 dark:bg-zinc-900/30">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl font-black mb-6 text-brand-green dark:text-white">Who Is At Risk?</h2>
+                <p class="text-zinc-600 dark:text-gray-400 text-lg">Vulnerable communities bearing the silent burden of digital waste</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Persona 1 -->
+                <div class="card-flip h-[400px] w-full group reveal">
+                    <div class="card-flip-inner relative w-full h-full text-center">
+                        <div class="card-front glass absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] border border-black/5 dark:border-white/10 hover:shadow-2xl transition-shadow duration-500">
+                            <div class="w-24 h-24 bg-brand-green/10 dark:bg-brand-green/20 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+                                <i data-lucide="users" size="48" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-brand-green dark:text-white transition-colors duration-300">Informal Workers</h3>
+                            <p class="text-[10px] text-brand-green dark:text-brand-lightGreen mt-4 font-black uppercase tracking-[0.2em]">Primary Hazard</p>
+                        </div>
+                        <div class="card-back bg-brand-green absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] text-white shadow-2xl">
+                            <h3 class="text-2xl font-bold mb-6">Direct Exposure</h3>
+                            <p class="text-sm font-medium leading-relaxed opacity-90">Constant handling of lead, mercury, and flame retardants without protection leads to chronic organ failure and skin diseases.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Persona 2 -->
+                <div class="card-flip h-[400px] w-full group reveal" style="transition-delay: 0.1s">
+                    <div class="card-flip-inner relative w-full h-full text-center">
+                        <div class="card-front glass absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] border border-black/5 dark:border-white/10 hover:shadow-2xl transition-shadow duration-500">
+                            <div class="w-24 h-24 bg-brand-green/10 dark:bg-brand-green/20 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+                                <i data-lucide="baby" size="48" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-brand-green dark:text-white transition-colors duration-300">Children</h3>
+                            <p class="text-[10px] text-brand-green dark:text-brand-lightGreen mt-4 font-black uppercase tracking-[0.2em]">Developmental Risk</p>
+                        </div>
+                        <div class="card-back bg-brand-green absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] text-white shadow-2xl">
+                            <h3 class="text-2xl font-bold mb-6">Growing Danger</h3>
+                            <p class="text-sm font-medium leading-relaxed opacity-90">Children in e-waste hotspots suffer from stunted growth, reduced cognitive ability, and permanent nervous system damage.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Persona 3 -->
+                <div class="card-flip h-[400px] w-full group reveal" style="transition-delay: 0.2s">
+                    <div class="card-flip-inner relative w-full h-full text-center">
+                        <div class="card-front glass absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] border border-black/5 dark:border-white/10 hover:shadow-2xl transition-shadow duration-500">
+                            <div class="w-24 h-24 bg-brand-green/10 dark:bg-brand-green/20 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+                                <i data-lucide="home" size="48" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-brand-green dark:text-white transition-colors duration-300">Local Residents</h3>
+                            <p class="text-[10px] text-brand-green dark:text-brand-lightGreen mt-4 font-black uppercase tracking-[0.2em]">Ambient Poisoning</p>
+                        </div>
+                        <div class="card-back bg-brand-green absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] text-white shadow-2xl">
+                            <h3 class="text-2xl font-bold mb-6">Silent Threat</h3>
+                            <p class="text-sm font-medium leading-relaxed opacity-90">Even those not working with e-waste are poisoned through contaminated groundwater and toxic fumes from nearby backyard smelting.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Persona 4 -->
+                <div class="card-flip h-[400px] w-full group reveal" style="transition-delay: 0.3s">
+                    <div class="card-flip-inner relative w-full h-full text-center">
+                        <div class="card-front glass absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] border border-black/5 dark:border-white/10 hover:shadow-2xl transition-shadow duration-500">
+                            <div class="w-24 h-24 bg-brand-green/10 dark:bg-brand-green/20 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+                                <i data-lucide="leaf" size="48" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-brand-green dark:text-white transition-colors duration-300">The Environment</h3>
+                            <p class="text-[10px] text-brand-green dark:text-brand-lightGreen mt-4 font-black uppercase tracking-[0.2em]">Ecological Collapse</p>
+                        </div>
+                        <div class="card-back bg-brand-green absolute inset-0 flex flex-col items-center justify-center p-10 rounded-[3rem] text-white shadow-2xl">
+                            <h3 class="text-2xl font-bold mb-6">Soil & Water</h3>
+                            <p class="text-sm font-medium leading-relaxed opacity-90">Heavy metals persist for centuries, sterilizing farmland and entering the food supply through fish and livestock.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Feature Section: Search Centers -->
+    <section id="centers" class="py-32 bg-zinc-100 dark:bg-zinc-900/30">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <h2 class="text-5xl font-black mb-8 text-brand-green dark:text-white">Authorized Safe <br/>Disposal Network</h2>
+                    <p class="text-zinc-600 dark:text-gray-400 text-lg mb-10 leading-relaxed">Don't give your old electronics to scrap dealers. Find certified recycling centers that use environmentally sound technologies to process waste without harming health.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 rounded-2xl glass border-l-4 border-brand-green dark:border-brand-lightGreen shadow-sm dark:shadow-none">
+                            <i data-lucide="check-circle" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            <span class="font-medium">Certified by Pollution Control Board</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-2xl glass border-l-4 border-brand-green dark:border-brand-lightGreen shadow-sm dark:shadow-none">
+                            <i data-lucide="check-circle" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            <span class="font-medium">Zero-Landfill Policy</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-2xl glass border-l-4 border-brand-green dark:border-brand-lightGreen shadow-sm dark:shadow-none">
+                            <i data-lucide="check-circle" class="text-brand-green dark:text-brand-lightGreen"></i>
+                            <span class="font-medium">Data Destruction Guarantee</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal glass p-8 rounded-[3rem] shadow-2xl shadow-black/5 dark:shadow-none border border-black/5 dark:border-white/10">
+                    <div class="flex items-center justify-between mb-8">
+                        <h4 class="font-bold text-xl text-brand-green dark:text-white">Find Near You</h4>
+                        <div class="relative">
+                            <input type="text" id="pincode-search" placeholder="Enter Pincode..." class="bg-white/50 dark:bg-brand-charcoal/50 border border-black/10 dark:border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-brand-green dark:focus:border-brand-lightGreen w-48 transition-all">
+                            <i data-lucide="search" size="16" class="absolute right-3 top-2.5 opacity-40"></i>
+                        </div>
+                    </div>
+                    
+                    <div id="centers-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Centers will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Resources Hub Section -->
+    <section id="resources" class="py-32 bg-white dark:bg-transparent">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl font-black mb-6 text-brand-green dark:text-white">Education & Resources</h2>
+                <p class="text-zinc-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">Equip yourself with the knowledge to fight the e-waste crisis. Download guides, watch tutorials, and learn safe handling protocols.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Resource 1 -->
+                <div class="reveal group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] glass">
+                    <img src="https://images.unsplash.com/photo-1591405351990-4726e331f141?auto=format&fit=crop&w=600&q=80" alt="Safety Guide" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 group-hover:opacity-60">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-transparent to-transparent"></div>
+                    <div class="absolute bottom-10 left-10 right-10">
+                        <div class="bg-brand-green text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full w-fit mb-4">PDF Guide</div>
+                        <h3 class="text-2xl font-bold mb-4">Safety Protocols for Scrap Collectors</h3>
+                        <button class="flex items-center gap-2 text-brand-lightGreen font-bold group-hover:gap-4 transition-all">
+                            Download Now <i data-lucide="download" size="18"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Resource 2 -->
+                <div class="reveal group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] glass" style="transition-delay: 0.1s">
+                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=600&q=80" alt="Hazard Video" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 group-hover:opacity-60">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-transparent to-transparent"></div>
+                    <div class="absolute bottom-10 left-10 right-10">
+                        <div class="bg-brand-lightGreen text-brand-charcoal text-[10px] font-bold uppercase px-3 py-1 rounded-full w-fit mb-4">Educational Video</div>
+                        <h3 class="text-2xl font-bold mb-4">Chemical Exposure: A Silent Epidemic</h3>
+                        <button class="flex items-center gap-2 text-brand-lightGreen font-bold group-hover:gap-4 transition-all">
+                            Watch Video <i data-lucide="play-circle" size="18"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Resource 3 -->
+                <div class="reveal group relative overflow-hidden rounded-[2.5rem] aspect-[4/5] glass" style="transition-delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80" alt="Action Plan" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 group-hover:opacity-60">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-charcoal via-transparent to-transparent"></div>
+                    <div class="absolute bottom-10 left-10 right-10">
+                        <div class="bg-blue-600 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full w-fit mb-4">NGO Toolkit</div>
+                        <h3 class="text-2xl font-bold mb-4">Community Awareness Campaign Kit</h3>
+                        <button class="flex items-center gap-2 text-brand-lightGreen font-bold group-hover:gap-4 transition-all">
+                            Access Toolkit <i data-lucide="external-link" size="18"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Awareness Quote / Video Section -->
+    <section class="py-32 flex items-center justify-center relative bg-white dark:bg-transparent">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal">
+            <i data-lucide="quote" class="text-brand-green dark:text-brand-lightGreen mx-auto mb-10 opacity-40" size="64"></i>
+            <h2 class="text-4xl md:text-6xl font-serif italic font-light leading-snug mb-16 text-zinc-800 dark:text-white">
+                "Our technology is advancing faster than our wisdom to manage its waste. 
+                What we build to connect us shouldn't be what ultimately breaks our health."
+            </h2>
+            <div class="w-full aspect-video bg-zinc-200 dark:bg-zinc-800 rounded-[3rem] flex items-center justify-center group cursor-pointer relative overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=1200&q=80" alt="E-waste video thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700">
+                <div class="relative z-10 w-24 h-24 bg-brand-green dark:bg-brand-lightGreen rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl">
+                    <i data-lucide="play" class="text-white dark:text-brand-charcoal fill-current" size="32"></i>
+                </div>
+                <p class="absolute bottom-8 font-black tracking-[0.3em] uppercase text-xs text-brand-green dark:text-white">Watch Documentary</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Stats Section -->
+    <section class="py-24 border-y border-black/5 dark:border-white/5 relative overflow-hidden bg-white dark:bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+            <div class="reveal">
+                <div class="text-5xl font-black text-brand-green dark:text-brand-lightGreen mb-2 counter" data-target="15">0</div>
+                <div class="text-[10px] font-black uppercase tracking-widest opacity-60 text-zinc-500 dark:text-white">Cities Covered</div>
+            </div>
+            <div class="reveal" style="transition-delay: 0.1s">
+                <div class="text-5xl font-black text-brand-green dark:text-brand-lightGreen mb-2 counter" data-target="45000">0</div>
+                <div class="text-[10px] font-black uppercase tracking-widest opacity-60 text-zinc-500 dark:text-white">Kgs Recovered</div>
+            </div>
+            <div class="reveal" style="transition-delay: 0.2s">
+                <div class="text-5xl font-black text-brand-green dark:text-brand-lightGreen mb-2 counter" data-target="1200">0</div>
+                <div class="text-[10px] font-black uppercase tracking-widest opacity-60 text-zinc-500 dark:text-white">Workers Trained</div>
+            </div>
+            <div class="reveal" style="transition-delay: 0.3s">
+                <div class="text-5xl font-black text-brand-green dark:text-brand-lightGreen mb-2 counter" data-target="82">0</div>
+                <div class="text-[10px] font-black uppercase tracking-widest opacity-60 text-zinc-500 dark:text-white">NGO Partners</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 glass border-t border-black/5 dark:border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-8">
+                        <i data-lucide="cpu" class="text-brand-green dark:text-brand-lightGreen" size="32"></i>
+                        <span class="font-bold text-2xl text-brand-green dark:text-white">EcoSafe</span>
+                    </div>
+                    <p class="text-zinc-600 dark:text-gray-400 text-lg leading-relaxed mb-8 max-w-md">An innovation and design thinking initiative focused on digitizing and formalizing e-waste management to protect human lives and our planet.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-brand-green hover:text-white hover:-translate-y-1 transition-all"><i data-lucide="facebook"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-brand-green hover:text-white hover:-translate-y-1 transition-all"><i data-lucide="twitter"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-brand-green hover:text-white hover:-translate-y-1 transition-all"><i data-lucide="linkedin"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-8 text-brand-green dark:text-white">Platform</h5>
+                    <ul class="space-y-4 text-zinc-500 dark:text-gray-400">
+                        <li><a href="#" class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Safety Assessment</a></li>
+                        <li><a href="#" class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Disposal Centers</a></li>
+                        <li><a href="#" class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Reporting Tool</a></li>
+                        <li><a href="#" class="hover:text-brand-green dark:hover:text-brand-lightGreen transition-colors">Impact Tracking</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold mb-8 text-brand-green dark:text-white">Project Info</h5>
+                    <ul class="space-y-4 text-zinc-500 dark:text-gray-400 text-sm">
+                        <li>Subject: Innovation & Design Thinking</li>
+                        <li>Year: SY B.Tech (CSE)</li>
+                        <li>College: WCE Sangli</li>
+                        <li>Team: E-Waste Warriors</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center pt-8 border-t border-black/5 dark:border-white/5 text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-[0.3em]">
+                &copy; 2026 EcoSafe | Designed for Academic Innovation
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+
+    <!-- 1. Health Quiz Modal -->
+    <div id="quiz-modal" class="modal">
+        <div class="glass max-w-2xl w-full mx-6 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
+            <button onclick="closeModal('quiz-modal')" class="absolute top-8 right-8 text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="x" size="24"></i>
+            </button>
+            <div class="mb-8">
+                <h3 class="text-3xl font-black mb-2">Quick Health Exposure Test</h3>
+                <p class="text-gray-400">Answer these 3 questions to evaluate your risk level.</p>
+            </div>
+            <div id="quiz-content" class="space-y-8">
+                <div>
+                    <p class="font-bold mb-4">1. How often do you handle electronic scrap (old phones, wires, motherboards)?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="nextStep(this)" class="p-4 rounded-2xl border border-white/10 hover:border-brand-lightGreen text-sm transition-all">Daily</button>
+                        <button onclick="nextStep(this)" class="p-4 rounded-2xl border border-white/10 hover:border-brand-lightGreen text-sm transition-all">Weekly</button>
+                        <button onclick="nextStep(this)" class="p-4 rounded-2xl border border-white/10 hover:border-brand-lightGreen text-sm transition-all">Rarely</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Report Issue Modal -->
+    <div id="report-modal" class="modal">
+        <div class="glass max-w-xl w-full mx-6 p-10 rounded-[3rem] shadow-2xl relative">
+            <button onclick="closeModal('report-modal')" class="absolute top-8 right-8 text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="x" size="24"></i>
+            </button>
+            <h3 class="text-3xl font-black mb-8">Report Unsafe Practices</h3>
+            <form class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-gray-400 mb-2">Location of Practice</label>
+                    <input type="text" placeholder="Street, Area, City" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-brand-green dark:focus:border-brand-lightGreen transition-all text-zinc-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-gray-400 mb-2">Type of Hazard</label>
+                    <select class="w-full bg-white dark:bg-brand-charcoal border border-black/10 dark:border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-brand-green dark:focus:border-brand-lightGreen transition-all text-zinc-900 dark:text-white">
+                        <option>Wire Burning</option>
+                        <option>Acid Leaching</option>
+                        <option>Illegal Dumping</option>
+                        <option>Child Labor in Scrap</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-gray-400 mb-2">Evidence / Details</label>
+                    <textarea placeholder="Describe what you see..." class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-6 py-4 h-32 focus:outline-none focus:border-brand-green dark:focus:border-brand-lightGreen transition-all text-zinc-900 dark:text-white"></textarea>
+                </div>
+                <button type="button" onclick="alert('Thank you! Report submitted successfully.')" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-red-600/20 active:scale-95">
+                    Submit Urgent Report
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Live Alert -->
+    <div id="risk-toast" class="fixed bottom-6 right-6 glass p-5 rounded-2xl z-[60] flex items-center gap-4 border-l-4 border-red-500 translate-x-[150%] transition-transform duration-500">
+        <div class="bg-red-500/20 p-3 rounded-full animate-pulse">
+            <i data-lucide="alert-circle" class="text-red-500"></i>
+        </div>
+        <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-red-500">Real-time Alert</p>
+            <p class="text-sm font-bold">Informal burning detected in South Area</p>
+        </div>
+        <button onclick="this.parentElement.style.display='none'" class="text-gray-500 hover:text-white"><i data-lucide="x" size="18"></i></button>
+    </div>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Reveal animations on scroll
+        const reveal = () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    el.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', reveal);
+        reveal();
+
+        // Modals Logic
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fake Quiz Logic
+        function nextStep(btn) {
+            const content = document.getElementById('quiz-content');
+            content.innerHTML = `
+                <div class="text-center py-10 animate-slide-in">
+                    <div class="w-20 h-20 bg-brand-green/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="shield-check" class="text-brand-lightGreen" size="40"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Moderate Risk Detected</h4>
+                    <p class="text-gray-400 mb-8 leading-relaxed">Based on your frequency, you might be exposed to fine particulate matter. We recommend wearing protective gear and checking out our safety protocols.</p>
+                    <button onclick="closeModal('quiz-modal')" class="bg-brand-green text-white px-8 py-3 rounded-xl font-bold">Got it!</button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Counter animation
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace(',', '');
+                    const inc = target / 100;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target.toLocaleString();
+                    }
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    if(entries[0].isIntersecting) {
+                        updateCount();
+                        observer.unobserve(counter);
+                    }
+                });
+                observer.observe(counter);
+            });
+        };
+
+        animateCounters();
+
+        // Workable Centers Logic
+        const centersData = [
+            { name: "EcoRecycle Hub", address: "12/B Industrial Estate, Sangli", pincode: "416416", distance: "2.4", open: true, lat: 16.8524, lng: 74.5815 },
+            { name: "Green Tech Solutions", address: "Plot 45, MIDC Area, Kupwad", pincode: "416436", distance: "5.1", open: false, lat: 16.8833, lng: 74.6333 },
+            { name: "Urban Mining Co.", address: "Near Railway Station, Sangli", pincode: "416416", distance: "0.8", open: true, lat: 16.8458, lng: 74.6015 },
+            { name: "SafeScrap Center", address: "Main Road, Miraj", pincode: "416410", distance: "12.0", open: true, lat: 16.8242, lng: 74.6465 },
+            { name: "E-Waste Depot", address: "Vishrambag, Sangli", pincode: "416415", distance: "3.2", open: true, lat: 16.8415, lng: 74.5935 }
+        ];
+
+        function renderCenters(filter = "") {
+            const list = document.getElementById('centers-list');
+            const filtered = centersData.filter(c => 
+                c.name.toLowerCase().includes(filter.toLowerCase()) || 
+                c.pincode.includes(filter) || 
+                c.address.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="p-10 text-center opacity-50">No centers found in this area.</div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(c => `
+                <div class="p-6 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all cursor-pointer group ${!c.open ? 'opacity-60' : ''} border border-black/5 dark:border-white/5 hover:shadow-lg">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-bold text-brand-green dark:text-white group-hover:text-emerald-600 dark:group-hover:text-brand-lightGreen transition-colors">${c.name}</span>
+                        <span class="text-[10px] font-black uppercase tracking-widest ${c.open ? 'bg-brand-green' : 'bg-zinc-500'} text-white px-2 py-1 rounded">
+                            ${c.open ? 'Open Now' : 'Closed'}
+                        </span>
+                    </div>
+                    <p class="text-sm text-zinc-500 dark:text-gray-400 mb-4">${c.address} - ${c.pincode}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-brand-green dark:text-brand-lightGreen font-bold flex items-center gap-1">
+                            <i data-lucide="navigation" size="12"></i> ${c.distance} km away
+                        </span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-white group-hover:text-brand-green dark:group-hover:text-brand-lightGreen flex items-center gap-1 transition-colors">
+                            Get Directions <i data-lucide="chevron-right" size="14"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        document.getElementById('pincode-search').addEventListener('input', (e) => {
+            renderCenters(e.target.value);
+        });
+
+        // Initial render
+        renderCenters();
+
+        // Show toast
+        setTimeout(() => {
+            const toast = document.getElementById('risk-toast');
+            toast.style.transform = 'translateX(0)';
+            setTimeout(() => {
+                toast.style.transform = 'translateX(150%)';
+            }, 10000);
+        }, 5000);
+
+        // Hero Carousel Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        
+        function nextSlide() {
+            slides[currentSlide].classList.replace('opacity-100', 'opacity-0');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.replace('opacity-0', 'opacity-100');
+        }
+
+        setInterval(nextSlide, 5000); // Change image every 5 seconds
+    </script>
+</body>
+</html>
